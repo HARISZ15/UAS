@@ -117,7 +117,7 @@ if (isset($_POST['simpan'])) {
         $simpan = $stmt->execute();
     } else {
 		    //insert data
-        $stmt = $conn->prepare("INSERT INTO article (judul,isi,gambar,tanggal,username)
+        $stmt = $conn->prepare("INSERT INTO gallery (judul,isi,gambar,tanggal,username)
                                 VALUES (?,?,?,?,?)");
 
         $stmt->bind_param("sssss", $judul, $isi, $gambar, $tanggal, $username);
