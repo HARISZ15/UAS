@@ -331,96 +331,63 @@ include "koneksi.php";
         </div>
     </section>
 
-    <!-- Gallery Section -->
-    <section id="gallery" class="bg-light py-5 bg-danger-subtle">
-        <div class="container bg-pink p-5 rounded">
-            <h1 class="text-center fw-bold mb-4">Gallery</h1>
-            <div id="carouselExampleCaptions" class="carousel slide">
-                <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
-                        aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
-                        aria-label="Slide 2"></button>
-                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
-                        aria-label="Slide 3"></button>
-                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3"
-                        aria-label="Slide 4"></button>
-                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="4"
-                        aria-label="Slide 5"></button>
-                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="5"
-                        aria-label="Slide 6"></button>
-                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="6"
-                        aria-label="Slide 7"></button>
-                </div>
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src="image6.jpg" class="d-block w-100 img-fluid" style="height: 450px; object-fit: cover;"
-                            alt="foto 1">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>Laboratorium</h5>
-                            <p>Tempat untuk melakukan eksperimen dan praktek ilmu pengetahuan secara
-                                langsung dengan fasilitas lengkap.</p>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="image10.jpg" class="d-block w-100 img-fluid" style="height: 450px; object-fit: cover;"
-                            alt="foto 2">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>Belajar Kelompok</h5>
-                            <p>Kegiatan belajar bersama yang memberikan kesempatan untuk berdiskusi dan
-                                memecahkan masalah secara kolektif.</p>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="image4.jpg" class="d-block w-100 img-fluid" style="height: 450px; object-fit: cover;"
-                            alt="foto 3">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>Perpustakaan</h5>
-                            <p>Tempat untuk mencari berbagai referensi buku dan literatur. Ideal untuk
-                                belajar dan mencari inspirasi.</p>
-                        </div>
-                    </div>
+<!-- Gallery Section -->
+<section id="gallery" class="bg-light py-5 bg-danger-subtle">
+    <div class="container bg-pink p-5 rounded">
+        <h1 class="text-center fw-bold mb-4">Gallery</h1>
+        <div id="carouselExampleCaptions" class="carousel slide">
+            <div class="carousel-indicators">
+                <?php
+                $sql = "SELECT * FROM gallery ORDER BY tanggal DESC";
+                $hasil = $conn->query($sql); 
+                $total_items = $hasil->num_rows;
 
-                    <div class="carousel-item">
-                        <img src="image12.jpg" class="d-block w-100 img-fluid" style="height: 450px; object-fit: cover;"
-                            alt="foto 4">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>Lapangan Olahraga</h5>
-                            <p>Fasilitas olahraga untuk menjaga kebugaran dan keseimbangan antara aktivitas akademik dan fisik.</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-item">
-                        <img src="image13.jpg" class="d-block w-100 img-fluid" style="height: 450px; object-fit: cover;"
-                            alt="foto 5">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>Kantin Kampus</h5>
-                            <p>Tempat bersantai dan mengisi energi di sela-sela aktivitas belajar. Tersedia berbagai makanan dan minuman.</p>
-                        </div>
-                    </div>
-
-                    <div class="carousel-item">
-                        <img src="image14.jpg" class="d-block w-100 img-fluid" style="height: 450px; object-fit: cover;"
-                            alt="foto 6">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>kelas</h5>
-                            <p>Ruangan yang nyaman untuk belajar, diskusi kelompok, dan berbagi ilmu bersama teman.</p>
-                        </div>
-                    </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
-                    data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
-                    data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
+                if ($total_items > 0) {
+                    for ($i = 0; $i < $total_items; $i++) {
+                        $active_class = $i === 0 ? "active" : "";
+                        echo "<button type='button' data-bs-target='#carouselExampleCaptions' data-bs-slide-to='{$i}' class='{$active_class}' aria-label='Slide " . ($i + 1) . "'></button>";
+                    }
+                }
+                ?>
             </div>
+            <div class="carousel-inner">
+                <?php
+                if ($total_items > 0) {
+                    $is_first = true;
+                    while ($row = $hasil->fetch_assoc()) {
+                        $active_class = $is_first ? "active" : "";
+                        $is_first = false; // Set subsequent items to inactive
+                        ?>
+                        <div class="carousel-item <?= $active_class ?>">
+                            <img src="<?= htmlspecialchars($row["gambar"]) ?>" class="d-block w-100 img-fluid" style="height: 450px; object-fit: cover;" alt="foto">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5><?= htmlspecialchars($row["judul"]) ?></h5>
+                                <p><?= htmlspecialchars($row["isi"]) ?></p>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                } else {
+                    echo "<div class='carousel-item active'>
+                            <div class='d-flex justify-content-center align-items-center' style='height: 450px; background-color: #f8f9fa;'>
+                                <p class='text-muted'>No gallery items available</p>
+                            </div>
+                          </div>";
+                }
+                ?>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
-    </section>
+    </div>
+</section>
+
 
 
 
